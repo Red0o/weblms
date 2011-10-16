@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from django.contrib.admin.models import User
 from datetime import datetime
+from django.contrib.admin.models import User
+from django.template.defaultfilters import slugify
 
 class Aluno(models.Model):
 	
@@ -14,7 +15,7 @@ class Aluno(models.Model):
 	email = models.EmailField(max_length=64)
 	password = models.CharField(max_length=50)
 	telefone = models.CharField(max_length=16)
-	data_cadastro = models.DateTimeField(default=datetime.now, blank=True)#, editable=False
+	data_cadastro = models.DateTimeField(default=datetime.now)#, editable=False
 	
 	class Meta:
 		ordering = ['-id']
@@ -43,3 +44,27 @@ class Aluno(models.Model):
 	def __unicode__ (self):
 		return self.username
 
+class Editora(models.Model):
+	nome = models.CharField(max_length=64)
+	slug = models.SlugField(max_length=64)
+	
+	def __unicode__ (self):
+		return self.nome
+
+class Livro(models.Model):
+	titulo = models.CharField(max_length=255)
+	idioma = models.CharField(max_length=2)
+	local = models.CharField(max_length=64)
+	isbn = models.CharField(max_length=17)
+	edicao = models.CharField(max_length=50)
+	data_lancamento = models.DateTimeField(default=datetime.now)#,editable=False
+	data_cadastro = models.DateTimeField(default=datetime.now)#,editable=False
+	descricao = models.TextField()
+	serie = models.CharField(max_length=32)
+	quantidade = models.CharField(max_length=3)
+	editora = models.ForeignKey(Editora)
+	classificacao = models.CharField(max_length=1)
+	
+	def __unicode__(self):
+		return self.titulo
+	
